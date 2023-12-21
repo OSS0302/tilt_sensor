@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class SensorApp extends StatelessWidget {
@@ -6,6 +7,10 @@ class SensorApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 가로모드 고정
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
     final centerX = MediaQuery.of(context).size.width / 2 - 50;
     final centerY = MediaQuery.of(context).size.height / 2 - 50;
 
@@ -16,32 +21,31 @@ class SensorApp extends StatelessWidget {
       body: Stack(
         children: [
           StreamBuilder<AccelerometerEvent>(
-            stream: accelerometerEventStream(),
-            builder: (context, snapshot) {
-              if(!snapshot.hasData){
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+              stream: accelerometerEventStream(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              final event = snapshot.data!;
-              List<double> accelerometerValues = [event.x,event.y,event.z];
+                final event = snapshot.data!;
+                List<double> accelerometerValues = [event.x, event.y, event.z];
                 print(accelerometerValues);
 
-              return Positioned(
-                left: centerX,
-                top: centerY,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(30),
+                return Positioned(
+                  left: centerX,
+                  top: centerY,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    width: 100,
+                    height: 100,
                   ),
-                  width: 100,
-                  height: 100,
-                ),
-              );
-            }
-          ),
+                );
+              }),
         ],
       ),
     );
