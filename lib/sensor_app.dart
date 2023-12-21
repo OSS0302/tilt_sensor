@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class SensorApp extends StatelessWidget {
   const SensorApp({super.key});
@@ -10,21 +11,36 @@ class SensorApp extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('수평계'),
+        title: const Text('수평계'),
       ),
       body: Stack(
         children: [
-          Positioned(
-            left: centerX,
-            top: centerY,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.cyan,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              width: 100,
-              height: 100,
-            ),
+          StreamBuilder<AccelerometerEvent>(
+            stream: accelerometerEventStream(),
+            builder: (context, snapshot) {
+              if(!snapshot.hasData){
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final event = snapshot.data!;
+              List<double> accelerometerValues = [event.x,event.y,event.z];
+                print(accelerometerValues);
+
+              return Positioned(
+                left: centerX,
+                top: centerY,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  width: 100,
+                  height: 100,
+                ),
+              );
+            }
           ),
         ],
       ),
