@@ -11,6 +11,7 @@ class SensorApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
     ]);
+
     final centerX = MediaQuery.of(context).size.width / 2 - 50;
     final centerY = MediaQuery.of(context).size.height / 2 - 50;
 
@@ -34,8 +35,8 @@ class SensorApp extends StatelessWidget {
                 print(accelerometerValues);
 
                 return Positioned(
-                  left: centerX,
-                  top: centerY,
+                  left: centerX + event.x * 20,
+                  top: centerY + event.y * 20,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.blue,
